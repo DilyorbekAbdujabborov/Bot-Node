@@ -1,0 +1,15 @@
+{
+  "name": "telegram-webinar-bot",
+  "version": "1.0.0",
+  "description": "A Telegram bot to register users and send webinar link to them.",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "author": "D. Abdujabborov",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "telegraf": "^4.0.0"
+  }
+}
