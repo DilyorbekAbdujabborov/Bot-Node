@@ -4,21 +4,23 @@ const { Telegraf } = require('telegraf');
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const webinarLink = process.env.WEBINAR_LINK;
 const adminId = process.env.ADMIN_ID;
+const defaultText = "Assalomu alaykum! Webinar uchun ro'yxatdan o'ting. Iltimos, telefon raqamingizni yuboring.";
 
 // Start komandasi
 bot.start((ctx) => {
-  ctx.reply('Assalomu alaykum! Webinar uchun ro\'yxatdan o\'ting. Iltimos, telefon raqamingizni yuboring.', {
+  const welcomeText = process.env.TEXT || defaultText;
+  ctx.reply(welcomeText, {
     reply_markup: {
       keyboard: [
         [
           {
             text: 'Telefon raqamimni yuborish',
-            request_contact: true // Bu foydalanuvchidan telefon raqamini so'rash uchun
+            request_contact: true
           }
         ]
       ],
-      one_time_keyboard: true, // Klaviatura faqat bir marta ko'rsatiladi
-      resize_keyboard: true // Klaviaturani moslashtirish
+      one_time_keyboard: true,
+      resize_keyboard: true
     }
   });
 });
@@ -29,10 +31,8 @@ bot.on('contact', (ctx) => {
   const userName = ctx.message.from.username || 'Ismi noma\'lum';
   const userId = ctx.message.from.id;
 
-  // Foydalanuvchidan telefon raqami olindi
   ctx.reply(`Rahmat! Telefon raqamingiz: ${phoneNumber}. Webinar uchun maxfiy link: ${webinarLink}`);
 
-  // Adminga foydalanuvchi ma'lumotlarini yuborish
   const userMessage = `
   Yangi foydalanuvchi ro'yxatdan o'tdi:
   Ism: ${userName}
@@ -41,11 +41,9 @@ bot.on('contact', (ctx) => {
   Webinar linki: ${webinarLink}
   `;
 
-  // Adminga yuborish
   bot.telegram.sendMessage(adminId, userMessage);
 });
 
-// Botni ishga tushirish
 bot.launch();
-bot.telegram.sendMessage(adminId, 'Bot ishga tushdi.');
 console.log('Bot ishga tushdi.');
+bot.telegram.sendMessage(adminId, 'Bot ishga tushdi.');
