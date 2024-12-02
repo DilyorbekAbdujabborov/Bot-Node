@@ -8,21 +8,26 @@ const defaultText = "Assalomu alaykum! Webinar uchun ro'yxatdan o'ting. Iltimos,
 
 // Start komandasi
 bot.start((ctx) => {
-  const welcomeText = process.env.TEXT || defaultText;
-  ctx.reply(welcomeText, {
-    reply_markup: {
-      keyboard: [
-        [
-          {
-            text: 'Telefon raqamimni yuborish',
-            request_contact: true
-          }
-        ]
-      ],
-      one_time_keyboard: true,
-      resize_keyboard: true
-    }
-  });
+  const args = ctx.message.text.split('=')[1]; // Deep linking argumentlarini ajratish
+  if (args === 'webinar') {
+    const welcomeText = process.env.TEXT || defaultText;
+    ctx.reply(welcomeText, {
+      reply_markup: {
+        keyboard: [
+          [
+            {
+              text: 'Telefon raqamimni yuborish',
+              request_contact: true
+            }
+          ]
+        ],
+        one_time_keyboard: true,
+        resize_keyboard: true
+      }
+    });
+  } else {
+    ctx.reply("Assalomu alaykum! Botga xush kelibsiz.");
+  }
 });
 
 // Telefon raqamini qabul qilish
